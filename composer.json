@@ -1,0 +1,20 @@
+{
+  "name": "brick/translation",
+  "description": "Translation mechanism for web applications",
+  "type": "library",
+  "keywords": [
+    "Brick",
+    "Translation",
+    "Translator",
+    "Translate"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=7.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Brick\\Translation\\": "src/"
+    }
+  }
+}
