@@ -23,7 +23,7 @@ class PhpLoader implements TranslationLoader
      * @param string $directory
      * @param string $pattern
      */
-    public function __construct($directory, $pattern = '%s.php')
+    public function __construct(string $directory, string $pattern = '%s.php')
     {
         $this->directory = $directory;
         $this->pattern   = $pattern;
@@ -32,7 +32,7 @@ class PhpLoader implements TranslationLoader
     /**
      * {@inheritdoc}
      */
-    public function load($locale)
+    public function load(string $locale) : array
     {
         $file = $this->directory . DIRECTORY_SEPARATOR . sprintf($this->pattern, $locale);
 

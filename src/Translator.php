@@ -43,7 +43,7 @@ class Translator
      *
      * @return void
      */
-    public function setDefaultLocale($defaultLocale)
+    public function setDefaultLocale(?string $defaultLocale) : void
     {
         $this->defaultLocale = $defaultLocale;
     }
@@ -51,7 +51,7 @@ class Translator
     /**
      * @return string|null
      */
-    public function getDefaultLocale()
+    public function getDefaultLocale() : ?string
     {
         return $this->defaultLocale;
     }
@@ -64,7 +64,7 @@ class Translator
      *
      * @throws \Exception
      */
-    public function translate($key, $locale = null)
+    public function translate(string $key, string $locale = null) : string
     {
         if ($locale === null) {
             if ($this->defaultLocale === null) {

@@ -12,7 +12,7 @@ class NullLoader implements TranslationLoader
     /**
      * {@inheritdoc}
      */
-    public function load($locale)
+    public function load(string $locale) : array
     {
         return [];
     }

@@ -39,7 +39,7 @@ class FallbackLoader implements TranslationLoader
      *
      * @return void
      */
-    public function setFallbackLocale($locale)
+    public function setFallbackLocale(string $locale) : void
     {
         $this->fallbackLocale = $locale;
     }
@@ -49,7 +49,7 @@ class FallbackLoader implements TranslationLoader
      *
      * @return void
      */
-    public function addExtends(array $extends)
+    public function addExtends(array $extends) : void
     {
         $this->extends = $extends + $this->extends;
     }
@@ -57,7 +57,7 @@ class FallbackLoader implements TranslationLoader
     /**
      * {@inheritdoc}
      */
-    public function load($locale)
+    public function load(string $locale) : array
     {
         $dictionary = $this->loader->load($locale);
 

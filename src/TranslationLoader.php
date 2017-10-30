@@ -18,5 +18,5 @@ interface TranslationLoader
      *
      * @return array An associative array mapping translation keys to translated texts.
      */
-    public function load($locale);
+    public function load(string $locale) : array;
 }

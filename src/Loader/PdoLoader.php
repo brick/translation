@@ -37,7 +37,7 @@ class PdoLoader implements TranslationLoader
     /**
      * Class constructor.
      *
-     * @param \PDO $pdo
+     * @param \PDO  $pdo
      * @param array $options
      */
     public function __construct(\PDO $pdo, array $options)
@@ -63,7 +63,7 @@ class PdoLoader implements TranslationLoader
     /**
      * {@inheritdoc}
      */
-    public function load($locale)
+    public function load(string $locale) : array
     {
         $parameters = array_merge([$locale], $this->parameters);
 
