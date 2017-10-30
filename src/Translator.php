@@ -62,11 +62,11 @@ class Translator
      * @param string      $key    The translation key to look up.
      * @param string|null $locale The locale to translate in, or null to use the default locale.
      *
-     * @return string
+     * @return string|null The translated string, or null if not found.
      *
      * @throws \Exception
      */
-    public function translate(string $key, string $locale = null) : string
+    public function translate(string $key, string $locale = null) : ?string
     {
         if ($locale === null) {
             if ($this->defaultLocale === null) {
@@ -82,10 +82,6 @@ class Translator
 
         $dictionary = $this->dictionaries[$locale];
 
-        if (! isset($dictionary[$key])) {
-            return $key;
-        }
-
-        return $dictionary[$key];
+        return $dictionary[$key] ?? null;
     }
 }
