@@ -19,6 +19,8 @@ class Translator
     private $loader;
 
     /**
+     * The locale fallback mechanism.
+     *
      * @var LocaleFallback
      */
     private $localeFallback;
@@ -51,8 +53,6 @@ class Translator
      * @param string $locale The locale to translate in.
      *
      * @return string|null The translated string, or null if not found.
-     *
-     * @throws \Exception
      */
     public function translate(string $key, string $locale) : ?string
     {
