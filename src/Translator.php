@@ -35,6 +35,21 @@ class Translator
     private $dictionaries = [];
 
     /**
+     * @var string|null
+     */
+    private $defaultLocale;
+
+    /**
+     * @var string
+     */
+    private $parameterPrefix = '';
+
+    /**
+     * @var string
+     */
+    private $parameterSuffix = '';
+
+    /**
      * @param TranslationLoader   $loader         The translation loader.
      * @param LocaleFallback|null $localeFallback An optional locale fallback mechanism.
      */
@@ -49,12 +64,42 @@ class Translator
     }
 
     /**
+     * @param string|null $locale
+     *
+     * @return void
+     */
+    public function setDefaultLocale(?string $locale) : void
+    {
+        $this->defaultLocale = $locale;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDefaultLocale() : ?string
+    {
+        return $this->defaultLocale;
+    }
+
+    /**
+     * @param string $prefix
+     * @param string $suffix
+     *
+     * @return void
+     */
+    public function setParameterPrefixSuffix(string $prefix, string $suffix) : void
+    {
+        $this->parameterPrefix = $prefix;
+        $this->parameterSuffix = $suffix;
+    }
+
+    /**
      * @param string $key    The translation key to look up.
      * @param string $locale The locale to translate in.
      *
      * @return string|null The translated string, or null if not found.
      */
-    public function translate(string $key, string $locale) : ?string
+    private function rawTranslate(string $key, string $locale) : ?string
     {
         $locale = self::normalizeLocale($locale);
 
@@ -80,12 +125,59 @@ class Translator
     }
 
     /**
-     * @param string $locale
+     * @param string      $key     The translation key.
+     * @param array       $params  The named parameters to replace in the translated text. Optional.
+     * @param string|null $locale  The locale to translate to. Optional if a default locale has been set.
+     * @param string|null $default The default text if no translation is available. Optional, defaults to the key.
+     *
+     * @return string
+     *
+     * @throws \RuntimeException If no locale is provided, and no default locale has been set.
+     */
+    public function translate(string $key, array $params = [], string $locale = null, string $default = null) : string
+    {
+        if ($locale === null) {
+            if ($this->defaultLocale === null) {
+                throw new \RuntimeException('No default locale has been set. A locale must be provided.');
+            }
+
+            $locale = $this->defaultLocale;
+        }
+
+        $text = $this->rawTranslate($key, $locale);
+
+        if ($text === null) {
+            $text = $default ?? $key;
+        }
+
+        if ($params) {
+            $text = $this->replaceParameters($text, $params);
+        }
+
+        return $text;
+    }
+
+    /**
+     * Replaces parameters in a string.
+     *
+     * This is called internally by `translateReplace()`, but is exposed as a public method to allow
+     * more advanced uses such as replacing parameters after executing a transformation on a
+     * translated string.
+     *
+     * @param string $text
+     * @param array  $parameters
      *
      * @return string
      */
-    public static function normalizeLocale(string $locale) : string
+    public function replaceParameters(string $text, array $parameters) : string
     {
-        return strtolower(str_replace('_', '-', $locale));
+        $placeholders = [];
+
+        foreach ($parameters as $key => $value) {
+            $key = $this->parameterPrefix . $key . $this->parameterSuffix;
+            $placeholders[$key] = $value;
+        }
+
+        return strtr($text, $placeholders);
     }
 }
