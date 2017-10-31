@@ -12,11 +12,10 @@ interface TranslationLoader
     /**
      * Loads the available translations in a given locale.
      *
-     * If no translations are available in the given locale,
-     * or if the given locale is not supported,
+     * If no translations are available in the given locale, or if the given locale is not supported,
      * this method must return an empty array.
      *
-     * @param string $locale The locale in which to load the translations.
+     * @param string $locale The locale in which to load the translations, lowercase, dash-separated.
      *
      * @return array An associative array mapping translation keys to translated texts.
      */

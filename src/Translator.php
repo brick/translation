@@ -35,7 +35,7 @@ class Translator
 
     /**
      * @param string $key    The translation key to look up.
-     * @param string $locale The locale to translate in, or null to use the default locale.
+     * @param string $locale The locale to translate in.
      *
      * @return string|null The translated string, or null if not found.
      *
@@ -43,10 +43,22 @@ class Translator
      */
     public function translate(string $key, string $locale) : ?string
     {
+        $locale = $this->normalizeLocale($locale);
+
         if (! isset($this->dictionaries[$locale])) {
             $this->dictionaries[$locale] = $this->loader->load($locale);
         }
 
         return $this->dictionaries[$locale][$key] ?? null;
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return string
+     */
+    private function normalizeLocale(string $locale) : string
+    {
+        return strtolower(str_replace('_', '-', $locale));
     }
 }
