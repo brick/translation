@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Brick\Translation\Loader;
+namespace Brick\Translation\TranslationLoader;
 
 use Brick\Translation\TranslationLoader;
 
