@@ -114,7 +114,7 @@ class Translator
         $fallbackLocales = $this->localeFallback->getFallbackLocales($locale);
 
         foreach ($fallbackLocales as $fallbackLocale) {
-            $result = $this->translate($key, $fallbackLocale);
+            $result = $this->rawTranslate($key, $fallbackLocale);
 
             if ($result !== null) {
                 return $result;
