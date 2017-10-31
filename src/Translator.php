@@ -180,4 +180,14 @@ class Translator
 
         return strtr($text, $placeholders);
     }
+
+    /**
+     * @param string $locale
+     *
+     * @return string
+     */
+    public static function normalizeLocale(string $locale) : string
+    {
+        return strtolower(str_replace('_', '-', $locale));
+    }
 }
