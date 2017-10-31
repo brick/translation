@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Brick\Translation;
 
+use Brick\Translation\LocaleFallback\NullFallback;
+
 /**
  * Base implementation of a translator.
  */
@@ -12,9 +14,14 @@ class Translator
     /**
      * The translation loader.
      *
-     * @var \Brick\Translation\TranslationLoader
+     * @var TranslationLoader
      */
     private $loader;
+
+    /**
+     * @var LocaleFallback
+     */
+    private $localeFallback;
 
     /**
      * An associative array of locale to dictionary.
@@ -26,11 +33,17 @@ class Translator
     private $dictionaries = [];
 
     /**
-     * @param TranslationLoader $loader
+     * @param TranslationLoader   $loader         The translation loader.
+     * @param LocaleFallback|null $localeFallback An optional locale fallback mechanism.
      */
-    public function __construct(TranslationLoader $loader)
+    public function __construct(TranslationLoader $loader, LocaleFallback $localeFallback = null)
     {
-        $this->loader = $loader;
+        if ($localeFallback === null) {
+            $localeFallback = new NullFallback();
+        }
+
+        $this->loader         = $loader;
+        $this->localeFallback = $localeFallback;
     }
 
     /**
@@ -43,13 +56,27 @@ class Translator
      */
     public function translate(string $key, string $locale) : ?string
     {
-        $locale = $this->normalizeLocale($locale);
+        $locale = self::normalizeLocale($locale);
 
         if (! isset($this->dictionaries[$locale])) {
             $this->dictionaries[$locale] = $this->loader->load($locale);
         }
 
-        return $this->dictionaries[$locale][$key] ?? null;
+        if (isset($this->dictionaries[$locale][$key])) {
+            return $this->dictionaries[$locale][$key];
+        }
+
+        $fallbackLocales = $this->localeFallback->getFallbackLocales($locale);
+
+        foreach ($fallbackLocales as $fallbackLocale) {
+            $result = $this->translate($key, $fallbackLocale);
+
+            if ($result !== null) {
+                return $result;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -57,7 +84,7 @@ class Translator
      *
      * @return string
      */
-    private function normalizeLocale(string $locale) : string
+    public static function normalizeLocale(string $locale) : string
     {
         return strtolower(str_replace('_', '-', $locale));
     }
