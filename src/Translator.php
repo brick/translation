@@ -158,6 +158,34 @@ class Translator
     }
 
     /**
+     * @param string      $key     The translation key.
+     * @param array       $params  The named parameters to replace in the translated text. Optional.
+     * @param string|null $locale  The locale to translate to. Optional if a default locale has been set.
+     *
+     * @return string|null The translated string, or null if not available.
+     *
+     * @throws \RuntimeException If no locale is provided, and no default locale has been set.
+     */
+    public function translateOrNull(string $key, array $params = [], string $locale = null) : ?string
+    {
+        if ($locale === null) {
+            if ($this->defaultLocale === null) {
+                throw new \RuntimeException('No default locale has been set. A locale must be provided.');
+            }
+
+            $locale = $this->defaultLocale;
+        }
+
+        $text = $this->rawTranslate($key, $locale);
+
+        if ($text !== null && $params) {
+            $text = $this->replaceParameters($text, $params);
+        }
+
+        return $text;
+    }
+
+    /**
      * Replaces parameters in a string.
      *
      * This is called internally by `translateReplace()`, but is exposed as a public method to allow
