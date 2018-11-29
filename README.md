@@ -16,22 +16,10 @@ To be written.
 Installation
 ------------
 
-This library is installable via [Composer](https://getcomposer.org/).
-
-Just run:
+This library is installable via [Composer](https://getcomposer.org/):
 
 ```bash
 composer require brick/translation
-```
-
-or manually define the following requirement in your `composer.json` file:
-
-```json
-{
-    "require": {
-        "brick/translation": "0.1.*"
-    }
-}
 ```
 
 Requirements
