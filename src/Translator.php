@@ -53,7 +53,7 @@ class Translator
      * @param TranslationLoader   $loader         The translation loader.
      * @param LocaleFallback|null $localeFallback An optional locale fallback mechanism.
      */
-    public function __construct(TranslationLoader $loader, LocaleFallback $localeFallback = null)
+    public function __construct(TranslationLoader $loader, ?LocaleFallback $localeFallback = null)
     {
         if ($localeFallback === null) {
             $localeFallback = new NullFallback();
@@ -134,7 +134,7 @@ class Translator
      *
      * @throws \RuntimeException If no locale is provided, and no default locale has been set.
      */
-    public function translate(string $key, array $params = [], string $locale = null, string $default = null) : string
+    public function translate(string $key, array $params = [], ?string $locale = null, ?string $default = null) : string
     {
         if ($locale === null) {
             if ($this->defaultLocale === null) {
@@ -166,7 +166,7 @@ class Translator
      *
      * @throws \RuntimeException If no locale is provided, and no default locale has been set.
      */
-    public function translateOrNull(string $key, array $params = [], string $locale = null) : ?string
+    public function translateOrNull(string $key, array $params = [], ?string $locale = null) : ?string
     {
         if ($locale === null) {
             if ($this->defaultLocale === null) {
