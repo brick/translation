@@ -188,7 +188,7 @@ class Translator
     /**
      * Replaces parameters in a string.
      *
-     * This is called internally by `translateReplace()`, but is exposed as a public method to allow
+     * This is called internally by `translate()`, but is exposed as a public method to allow
      * more advanced uses such as replacing parameters after executing a transformation on a
      * translated string.
      *
